@@ -30,7 +30,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 disableUnnecessaryAndroidTests(target)
             }
             dependencies {
-                add("testImplementation", kotlin("test"))
+                add("testImplementation", kotlin("test-junit"))
 
                 add("androidTestImplementation", kotlin("test"))
                 add("androidTestImplementation", Libs.androidxTestCore)
