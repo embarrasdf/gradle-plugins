@@ -5,6 +5,7 @@ androidx-activity = "1.13.0"
 androidx-baselineprofile = "1.5.0-rc02"
 androidx-benchmark = "1.5.0-rc02"
 androidx-emoji2 = "1.6.0"
+androidx-lifecycle = "2.11.0"
 androidx-tracing-perfetto = "1.0.1"
 androidx-uiautomator = "2.4.0"
 firebase-testlab = "0.0.1-alpha13"
@@ -67,6 +68,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
