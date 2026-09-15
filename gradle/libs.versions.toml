@@ -20,7 +20,7 @@ junit = "6.1.3"
 kotlin = "2.4.20"
 ksp = "2.3.11"
 maven-publish = "0.37.0"
-room = "2.8.4"
+room = "2.8.5"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 
