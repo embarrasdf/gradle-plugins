@@ -19,6 +19,7 @@ internal fun Project.configureAndroidCompose(
             add("implementation", Libs.composeFoundation)
             add("implementation", Libs.composeRuntime)
             add("implementation", Libs.composeUiToolingPreview)
+            add("implementation", Libs.lifecycleRuntimeCompose)
 
             add("androidTestImplementation", platform(Libs.composeBom))
             add("androidTestImplementation", Libs.composeUiTestJunit4)
