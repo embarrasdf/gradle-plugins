@@ -42,14 +42,15 @@ class AndroidBaselineProfileConsumerLibraryConventionPlugin : Plugin<Project> {
                 attributes {
                     attribute(
                         org.gradle.api.attributes.Usage.USAGE_ATTRIBUTE,
-                        project.objects.named(org.gradle.api.attributes.Usage::class.java, "baselineProfile")
+                        project.objects.named(org.gradle.api.attributes.Usage::class.java, "baselineProfile"),
                     )
                 }
             }
 
             // Create task to copy baseline profiles (do this early, not in afterEvaluate)
             tasks.register<Copy>("copyBaselineProfile") {
-                description = "Copies baseline profile from generator module to src/androidMain/generated/baselineProfiles/baseline-prof.txt"
+                description =
+                    "Copies baseline profile from generator module to src/androidMain/generated/baselineProfiles/baseline-prof.txt"
                 group = "baseline profile"
 
                 from(baselineProfileConfiguration) {

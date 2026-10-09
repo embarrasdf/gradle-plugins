@@ -9,6 +9,7 @@ plugins {
     alias(embarrasdfPluginLibs.plugins.shipkit.autoversion) apply true
     alias(embarrasdfPluginLibs.plugins.shipkit.changelog) apply true
     alias(embarrasdfPluginLibs.plugins.shipkit.githubrelease) apply true
+    alias(embarrasdfPluginLibs.plugins.embarrasdf.format)
 }
 
 tasks.named<GenerateChangelogTask>("generateChangelog") {

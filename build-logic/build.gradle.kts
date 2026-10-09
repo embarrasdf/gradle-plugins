@@ -5,11 +5,13 @@ plugins {
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
     implementation(gradleApi())
     implementation(embarrasdfPluginLibs.kotlin.gradle.plugin)
+    implementation(embarrasdfPluginLibs.spotless.plugin)
 }
 
 kotlin {

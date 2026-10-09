@@ -36,6 +36,7 @@ dependencies {
     implementation(embarrasdfPluginLibs.shipkit.changelog.plugin)
     implementation(embarrasdfPluginLibs.maven.publish.plugin)
     implementation(embarrasdfPluginLibs.firebase.testlab.plugin)
+    implementation(embarrasdfPluginLibs.spotless.plugin)
 
     testImplementation(embarrasdfPluginLibs.junit.jupiter)
     testImplementation(embarrasdfPluginLibs.junit.platform.launcher)
@@ -114,6 +115,10 @@ gradlePlugin {
         register("desktopApplication") {
             id = "com.embarrasdf.gradle.plugin.desktop.application"
             implementationClass = "DesktopApplicationConventionPlugin"
+        }
+        register("format") {
+            id = "com.embarrasdf.gradle.plugin.format"
+            implementationClass = "FormatConventionPlugin"
         }
         register("githubRelease") {
             id = "com.embarrasdf.gradle.plugin.github.release"
