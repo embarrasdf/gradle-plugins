@@ -10,7 +10,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
             pluginManager.apply {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.plugin.compose")
-                apply("com.embarrasdf.gradle.plugin.lint")
+                apply("com.embarrasdf.gradle.plugin.format")
             }
 
             val extension = extensions.getByType<LibraryExtension>()

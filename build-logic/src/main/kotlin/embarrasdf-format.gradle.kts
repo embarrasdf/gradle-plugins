@@ -1,6 +1,6 @@
 import java.util.Properties
 
-// gradle-plugins can't apply its own lint plugin, so this configures Spotless the same way,
+// gradle-plugins can't apply its own format plugin, so this configures Spotless the same way,
 // from the same ktlint settings file the plugin ships.
 
 plugins {

@@ -11,7 +11,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("com.embarrasdf.gradle.plugin.lint")
+                apply("com.embarrasdf.gradle.plugin.format")
             }
 
             extensions.configure<ApplicationExtension> {

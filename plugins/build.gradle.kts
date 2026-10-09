@@ -116,6 +116,10 @@ gradlePlugin {
             id = "com.embarrasdf.gradle.plugin.desktop.application"
             implementationClass = "DesktopApplicationConventionPlugin"
         }
+        register("format") {
+            id = "com.embarrasdf.gradle.plugin.format"
+            implementationClass = "FormatConventionPlugin"
+        }
         register("githubRelease") {
             id = "com.embarrasdf.gradle.plugin.github.release"
             implementationClass = "GithubReleaseConventionPlugin"
@@ -127,10 +131,6 @@ gradlePlugin {
         register("kotlinMultiplatformLibrary") {
             id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library"
             implementationClass = "KotlinMultiplatformLibraryConventionPlugin"
-        }
-        register("lint") {
-            id = "com.embarrasdf.gradle.plugin.lint"
-            implementationClass = "LintConventionPlugin"
         }
         register("kotlinSerialization") {
             id = "com.embarrasdf.gradle.plugin.kotlin.serialization"

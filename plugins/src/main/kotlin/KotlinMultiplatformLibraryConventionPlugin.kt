@@ -63,7 +63,7 @@ class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.android.kotlin.multiplatform.library")
-            apply("com.embarrasdf.gradle.plugin.lint")
+            apply("com.embarrasdf.gradle.plugin.format")
         }
 
         configureKotlin()

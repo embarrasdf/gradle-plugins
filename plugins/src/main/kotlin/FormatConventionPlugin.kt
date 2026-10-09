@@ -14,7 +14,7 @@ import org.gradle.kotlin.dsl.configure
  * project too, so the root build and settings scripts are covered:
  * ```kotlin
  * plugins {
- *     alias(libs.plugins.embarrasdf.lint)
+ *     alias(libs.plugins.embarrasdf.format)
  * }
  * ```
  *
@@ -24,7 +24,7 @@ import org.gradle.kotlin.dsl.configure
  *
  * Neither task is attached to `check`, so formatting never fails a test run.
  */
-class LintConventionPlugin : Plugin<Project> {
+class FormatConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply("com.diffplug.spotless")

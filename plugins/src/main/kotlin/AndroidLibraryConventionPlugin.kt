@@ -15,7 +15,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
-                apply("com.embarrasdf.gradle.plugin.lint")
+                apply("com.embarrasdf.gradle.plugin.format")
             }
 
             extensions.configure<LibraryExtension> {
