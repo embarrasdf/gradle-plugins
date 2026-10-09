@@ -2,8 +2,10 @@ import com.embarrasdf.gradle.plugin.AndroidLibraryTargetConfiguration
 import com.embarrasdf.gradle.plugin.IosFrameworkConfiguration
 import com.embarrasdf.gradle.plugin.IosLibraryTargetConfiguration
 import com.embarrasdf.gradle.plugin.configure
+import com.embarrasdf.gradle.plugin.configureBrowserTests
 import com.embarrasdf.gradle.plugin.configureKotlin
 import com.embarrasdf.gradle.plugin.configureKotlinMultiplatformAndroidLibrary
+import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -57,6 +59,8 @@ enum class KotlinTarget {
  */
 class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
+        useNpmForKotlinWeb()
+
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.android.kotlin.multiplatform.library")
@@ -123,7 +127,9 @@ fun Project.libraryTargets(
         if (KotlinTarget.WASM in enabledTargets) {
             @OptIn(ExperimentalWasmDsl::class)
             wasmJs {
-                browser()
+                browser {
+                    configureBrowserTests()
+                }
                 binaries.executable()
             }
         }
