@@ -51,7 +51,7 @@ jobs:
 
       - name: Run checks
         if: always()
-        run: ./gradlew check embarrasdfFormatCheck
+        run: ./gradlew check
 
       - name: Upload test results (XML)
         if: always()
