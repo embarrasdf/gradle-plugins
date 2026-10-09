@@ -1,6 +1,6 @@
 import androidx.baselineprofile.gradle.producer.BaselineProfileProducerExtension
-import com.embarrasdf.gradle.plugin.Libs
 import com.android.build.api.dsl.TestExtension
+import com.embarrasdf.gradle.plugin.Libs
 import com.google.firebase.testlab.gradle.TestLabGradlePluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -61,7 +61,7 @@ import java.io.File
  */
 class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
     private companion object {
-        private const val DIRECTORY_TO_PULL_ROOT = "/storage/emulated/0/Android/media"
+        private const val DirectoryToPullRoot = "/storage/emulated/0/Android/media"
     }
 
     override fun apply(target: Project) {
@@ -104,7 +104,7 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
                 extensions.configure<TestLabGradlePluginExtension> {
                     testOptions {
                         results {
-                            directoriesToPull.add("$DIRECTORY_TO_PULL_ROOT/$namespace")
+                            directoriesToPull.add("$DirectoryToPullRoot/$namespace")
                         }
                     }
                 }
@@ -114,11 +114,11 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
                     group = "baseline profile"
 
                     val testResultsDir = layout.buildDirectory.dir(
-                        "outputs/androidTest-results/managedDevice/nonminifiedrelease/${extension.deviceName}/results"
+                        "outputs/androidTest-results/managedDevice/nonminifiedrelease/${extension.deviceName}/results",
                     )
 
                     from(testResultsDir) {
-                        include("**/artifacts$DIRECTORY_TO_PULL_ROOT/$namespace/*.txt")
+                        include("**/artifacts$DirectoryToPullRoot/$namespace/*.txt")
 
                         eachFile {
                             // Exclude timestamped files (format: *-YYYY-MM-DD-HH-MM-SS.txt)
@@ -160,7 +160,7 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
 
     private fun Project.determineBaselineProfileDestination(
         extension: BaselineProfileGeneratorExtension,
-        androidExtension: TestExtension
+        androidExtension: TestExtension,
     ): File {
         return when {
             extension.copyToLibrary != null -> {

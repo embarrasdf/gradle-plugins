@@ -100,7 +100,7 @@ abstract class CreateKmpLibraryModuleTask : DefaultTask() {
 
                 sourceSets {}
             }
-            
+
         """.trimIndent()
         moduleDir.resolve("build.gradle.kts").writeText(buildFileContent)
 

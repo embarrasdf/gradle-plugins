@@ -1,9 +1,9 @@
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.embarrasdf.gradle.plugin.AndroidMinSdk
 import com.embarrasdf.gradle.plugin.Libs
 import com.embarrasdf.gradle.plugin.configureKotlinAndroid
 import com.embarrasdf.gradle.plugin.disableUnnecessaryAndroidTests
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -15,6 +15,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
+                apply("com.embarrasdf.gradle.plugin.lint")
             }
 
             extensions.configure<LibraryExtension> {

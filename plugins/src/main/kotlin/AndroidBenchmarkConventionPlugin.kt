@@ -1,5 +1,5 @@
-import com.embarrasdf.gradle.plugin.Libs
 import com.android.build.api.dsl.TestExtension
+import com.embarrasdf.gradle.plugin.Libs
 import com.google.firebase.testlab.gradle.TestLabGradlePluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -73,7 +73,7 @@ import org.gradle.kotlin.dsl.register
  */
 class AndroidBenchmarkConventionPlugin : Plugin<Project> {
     private companion object {
-        private const val DIRECTORY_TO_PULL_ROOT = "/storage/emulated/0/Android/media"
+        private const val DirectoryToPullRoot = "/storage/emulated/0/Android/media"
     }
 
     override fun apply(target: Project) {
@@ -101,7 +101,7 @@ class AndroidBenchmarkConventionPlugin : Plugin<Project> {
                 extensions.configure<TestLabGradlePluginExtension> {
                     testOptions {
                         results {
-                            directoriesToPull.add("$DIRECTORY_TO_PULL_ROOT/$namespace")
+                            directoriesToPull.add("$DirectoryToPullRoot/$namespace")
                         }
                     }
                 }
@@ -111,11 +111,11 @@ class AndroidBenchmarkConventionPlugin : Plugin<Project> {
                     group = "benchmark"
 
                     val testResultsDir = layout.buildDirectory.dir(
-                        "outputs/androidTest-results/managedDevice/${extension.buildType.lowercase()}/${extension.deviceName}/results"
+                        "outputs/androidTest-results/managedDevice/${extension.buildType.lowercase()}/${extension.deviceName}/results",
                     )
 
                     from(testResultsDir) {
-                        include("**/artifacts$DIRECTORY_TO_PULL_ROOT/$namespace/$namespace-benchmarkData.json")
+                        include("**/artifacts$DirectoryToPullRoot/$namespace/$namespace-benchmarkData.json")
 
                         eachFile {
                             // Flatten directory structure, keep original filename

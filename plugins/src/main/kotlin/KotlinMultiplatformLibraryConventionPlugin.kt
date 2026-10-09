@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.embarrasdf.gradle.plugin.AndroidLibraryTargetConfiguration
 import com.embarrasdf.gradle.plugin.IosFrameworkConfiguration
 import com.embarrasdf.gradle.plugin.IosLibraryTargetConfiguration
@@ -6,7 +7,6 @@ import com.embarrasdf.gradle.plugin.configureBrowserTests
 import com.embarrasdf.gradle.plugin.configureKotlin
 import com.embarrasdf.gradle.plugin.configureKotlinMultiplatformAndroidLibrary
 import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
@@ -21,7 +21,6 @@ enum class KotlinTarget {
     JVM,
     IOS,
     WASM,
-    ;
 }
 
 /**
@@ -64,6 +63,7 @@ class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.android.kotlin.multiplatform.library")
+            apply("com.embarrasdf.gradle.plugin.lint")
         }
 
         configureKotlin()
@@ -74,26 +74,26 @@ fun Project.libraryTargets(
     androidNamespace: String,
     iosFrameworkBaseName: String,
     iosFrameworkIsStatic: Boolean = true,
-    targets: Set<KotlinTarget>? = null
+    targets: Set<KotlinTarget>? = null,
 ) {
     libraryTargets(
         androidConfiguration = AndroidLibraryTargetConfiguration(
-            namespace = androidNamespace
+            namespace = androidNamespace,
         ),
         iosConfiguration = IosLibraryTargetConfiguration(
             framework = IosFrameworkConfiguration(
                 baseName = iosFrameworkBaseName,
-                isStatic = iosFrameworkIsStatic
-            )
+                isStatic = iosFrameworkIsStatic,
+            ),
         ),
-        targets = targets
+        targets = targets,
     )
 }
 
 fun Project.libraryTargets(
     androidConfiguration: AndroidLibraryTargetConfiguration,
     iosConfiguration: IosLibraryTargetConfiguration,
-    targets: Set<KotlinTarget>? = null
+    targets: Set<KotlinTarget>? = null,
 ) {
     val enabledTargets = targets ?: loadTargetsFromProperties()
 

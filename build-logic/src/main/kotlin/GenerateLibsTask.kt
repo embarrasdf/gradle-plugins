@@ -26,7 +26,7 @@ abstract class GenerateLibsTask : DefaultTask() {
                     alias = alias,
                     group = dep.module.group,
                     artifact = dep.module.name,
-                    version = dep.versionConstraint.requiredVersion
+                    version = dep.versionConstraint.requiredVersion,
                 )
             }
         }
@@ -69,6 +69,6 @@ abstract class GenerateLibsTask : DefaultTask() {
         val alias: String,
         val group: String,
         val artifact: String,
-        val version: String
+        val version: String,
     )
 }

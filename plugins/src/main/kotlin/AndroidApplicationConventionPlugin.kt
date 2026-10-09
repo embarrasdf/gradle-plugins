@@ -1,7 +1,7 @@
+import com.android.build.api.dsl.ApplicationExtension
 import com.embarrasdf.gradle.plugin.AndroidMinSdk
 import com.embarrasdf.gradle.plugin.AndroidTargetSdk
 import com.embarrasdf.gradle.plugin.configureKotlinAndroid
-import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -11,6 +11,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
+                apply("com.embarrasdf.gradle.plugin.lint")
             }
 
             extensions.configure<ApplicationExtension> {

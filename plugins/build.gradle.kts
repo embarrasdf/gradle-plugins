@@ -36,6 +36,7 @@ dependencies {
     implementation(embarrasdfPluginLibs.shipkit.changelog.plugin)
     implementation(embarrasdfPluginLibs.maven.publish.plugin)
     implementation(embarrasdfPluginLibs.firebase.testlab.plugin)
+    implementation(embarrasdfPluginLibs.spotless.plugin)
 
     testImplementation(embarrasdfPluginLibs.junit.jupiter)
     testImplementation(embarrasdfPluginLibs.junit.platform.launcher)
@@ -126,6 +127,10 @@ gradlePlugin {
         register("kotlinMultiplatformLibrary") {
             id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library"
             implementationClass = "KotlinMultiplatformLibraryConventionPlugin"
+        }
+        register("lint") {
+            id = "com.embarrasdf.gradle.plugin.lint"
+            implementationClass = "LintConventionPlugin"
         }
         register("kotlinSerialization") {
             id = "com.embarrasdf.gradle.plugin.kotlin.serialization"
