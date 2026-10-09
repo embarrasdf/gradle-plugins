@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "gradle-plugins"
 
 include(":plugins")
+include(":settings")
