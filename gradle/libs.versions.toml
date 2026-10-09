@@ -87,6 +87,5 @@ maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publ
 shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
 shipkit-changelog = { id = "org.shipkit.shipkit-changelog", version.ref = "shipkit-changelog" }
 shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref = "shipkit-changelog" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [bundles]
