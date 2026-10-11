@@ -38,7 +38,7 @@ class CiTasksTest {
             """.trimIndent(),
         )
         git("init", "-q")
-        git("-c", "user.name=test", "-c", "user.email=test@example.com", "commit", "-q", "--allow-empty", "-m", "Initial")
+        git("commit", "-q", "--allow-empty", "-m", "Initial")
         // The release plugin needs a previous release.
         git("tag", "v0.0.1")
     }
@@ -89,7 +89,8 @@ class CiTasksTest {
     }
 
     private fun git(vararg args: String) {
-        val process = ProcessBuilder("git", *args).directory(projectDir).inheritIO().start()
+        val identity = arrayOf("-c", "user.name=test", "-c", "user.email=test@example.com")
+        val process = ProcessBuilder("git", *identity, *args).directory(projectDir).inheritIO().start()
         assertEquals(0, process.waitFor(), "git ${args.joinToString(" ")} failed")
     }
 }
