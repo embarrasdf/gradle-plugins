@@ -47,7 +47,7 @@ abstract class CreateKmpLibraryModuleTask : DefaultTask() {
 
         // Support both ":feature:auth" and "feature:auth" formats
         val normalizedName = name.removePrefix(":")
-        val modulePath = normalizedName.replace(oldChar = ':', newChar = '/')
+        val modulePath = normalizedName.replace(":", "/")
         val moduleDir = projectDir.resolve(modulePath)
         if (moduleDir.exists()) {
             println("Module directory '$modulePath' already exists. Skipping creation.")
@@ -81,9 +81,9 @@ abstract class CreateKmpLibraryModuleTask : DefaultTask() {
         normalizedName: String,
         namespace: String,
     ) {
-        val packageSuffix = normalizedName.replace(oldChar = ':', newChar = '.').replace(oldValue = "-", newValue = "")
+        val packageSuffix = normalizedName.replace(":", ".").replace("-", "")
         val packageName = "$namespace.$packageSuffix"
-        val packagePath = packageName.replace(oldChar = '.', newChar = '/')
+        val packagePath = packageName.replace(".", "/")
         for (sourceSet in ModuleSourceSets) {
             moduleDir.resolve("src/$sourceSet/kotlin/").resolve(packagePath).mkdirs()
         }

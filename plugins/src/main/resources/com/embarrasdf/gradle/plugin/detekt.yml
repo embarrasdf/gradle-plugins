@@ -1,7 +1,5 @@
-# detekt settings shared by every embarrasdf repo, applied on top of detekt's default config.
-#
-# Formatting and naming belong to ktlint (see ktlint.editorconfig.properties), so the detekt
-# rules that overlap with it are turned off here.
+# Static analysis settings shared by every embarrasdf repo, applied on top of detekt's default
+# config. Rules that overlap with the format task (embarrasdfFormatCheck) are turned off here.
 
 complexity:
   LongMethod:
@@ -13,11 +11,13 @@ complexity:
     # Calls with two or more arguments name them, outside tests.
     allowedArguments: 1
     ignoreArgumentsMatchingNames: true
+    ignoreMethods:
+      # replace(old, new) reads clearly without names.
+      - 'kotlin.text.replace'
     excludes: ['**/test/**', '**/*Test/**']
 
 naming:
-  # ktlint's class-naming, enum-entry-name-case, function-naming, filename, property-naming and
-  # package-name rules cover these. ktlint allows PascalCase constants and @Composable functions.
+  # Checked by the format task.
   ClassNaming:
     active: false
   EnumNaming:
@@ -37,8 +37,10 @@ style:
   MagicNumber:
     # Layout values in Composables (dp sizes, offsets, fractions) read better inline.
     ignoreAnnotated: ['Composable', 'Preview']
-  # ktlint's max-line-length, final-newline, indent, no-trailing-spaces,
-  # no-unused-imports and no-wildcard-imports rules cover these.
+  UnusedPrivateFunction:
+    # Previews are private and only used by the IDE.
+    ignoreAnnotated: ['Preview']
+  # Checked by the format task.
   MaxLineLength:
     active: false
   NewLineAtEndOfFile:
@@ -51,9 +53,6 @@ style:
     active: false
   WildcardImport:
     active: false
-  UnusedPrivateFunction:
-    # Previews are private and only used by the IDE.
-    ignoreAnnotated: ['Preview']
 
 # compose-rules (io.nlopez.compose.rules). Each rule has to be turned on here.
 Compose:
