@@ -24,13 +24,13 @@ internal fun Project.registerTestTasks() {
     tasks.register(TestTaskName) {
         group = "verification"
         description = "Runs the JVM, Android unit and browser tests."
-        dependsOn(tasks.withType<Test>().named { it in JvmTestTaskNames })
-        dependsOn(tasks.named { it in WebTestTaskNames })
+        dependsOn(tasks.withType<Test>().named { name -> name in JvmTestTaskNames })
+        dependsOn(tasks.named { name -> name in WebTestTaskNames })
     }
     tasks.register(AppleTestTaskName) {
         group = "verification"
         description = "Runs the iOS simulator tests."
-        dependsOn(tasks.named { it in AppleTestTaskNames })
+        dependsOn(tasks.named { name -> name in AppleTestTaskNames })
     }
 }
 
@@ -46,6 +46,6 @@ internal fun Project.addToReleaseTask(taskName: String) {
         }
     }
     tasks.named(ReleaseTaskName) {
-        dependsOn(tasks.named { it == taskName })
+        dependsOn(tasks.named { name -> name == taskName })
     }
 }
