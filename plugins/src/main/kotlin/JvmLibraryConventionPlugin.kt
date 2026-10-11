@@ -1,4 +1,5 @@
 import com.embarrasdf.gradle.plugin.configureKotlinJvm
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -11,6 +12,7 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
                 apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
             configureKotlinJvm()
+            registerTestTasks()
         }
     }
 }
