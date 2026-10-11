@@ -1,4 +1,5 @@
 import com.embarrasdf.gradle.plugin.configureBrowserTests
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,6 +15,7 @@ class WebApplicationConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.embarrasdf.gradle.plugin.format")
         }
+        registerTestTasks()
     }
 }
 

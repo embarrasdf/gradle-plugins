@@ -2,6 +2,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.embarrasdf.gradle.plugin.AndroidMinSdk
 import com.embarrasdf.gradle.plugin.AndroidTargetSdk
 import com.embarrasdf.gradle.plugin.configureKotlinAndroid
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -13,6 +14,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("com.embarrasdf.gradle.plugin.format")
             }
+            registerTestTasks()
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)

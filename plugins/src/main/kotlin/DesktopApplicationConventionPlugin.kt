@@ -1,3 +1,4 @@
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -11,6 +12,7 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.embarrasdf.gradle.plugin.format")
         }
+        registerTestTasks()
     }
 }
 

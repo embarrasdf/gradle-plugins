@@ -6,6 +6,7 @@ import com.embarrasdf.gradle.plugin.configure
 import com.embarrasdf.gradle.plugin.configureBrowserTests
 import com.embarrasdf.gradle.plugin.configureKotlin
 import com.embarrasdf.gradle.plugin.configureKotlinMultiplatformAndroidLibrary
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -67,6 +68,7 @@ class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
         }
 
         configureKotlin()
+        registerTestTasks()
     }
 }
 
