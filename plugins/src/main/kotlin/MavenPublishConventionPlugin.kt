@@ -11,7 +11,7 @@ class MavenPublishConventionPlugin : Plugin<Project> {
         // task exists only when Maven Central is configured, such as with SONATYPE_HOST.
         project.rootProject.pluginManager.withPlugin("org.shipkit.shipkit-github-release") {
             project.rootProject.tasks.named("githubRelease") {
-                mustRunAfter(project.tasks.named { it == PublishTaskName })
+                mustRunAfter(project.tasks.named { name -> name == PublishTaskName })
             }
         }
     }
