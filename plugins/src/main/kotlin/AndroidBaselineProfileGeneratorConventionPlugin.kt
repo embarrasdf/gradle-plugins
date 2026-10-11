@@ -73,10 +73,10 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", Libs.androidxTestExtJunit)
-                add("implementation", Libs.androidxTestRunner)
-                add("implementation", Libs.androidxUiautomator)
-                add("implementation", Libs.androidxBenchmarkMacroJunit4)
+                "implementation"(Libs.androidxTestExtJunit)
+                "implementation"(Libs.androidxTestRunner)
+                "implementation"(Libs.androidxUiautomator)
+                "implementation"(Libs.androidxBenchmarkMacroJunit4)
             }
 
             val extension = extensions.create("baselineProfileGenerator", BaselineProfileGeneratorExtension::class.java)
@@ -92,69 +92,71 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
                 }
             }
 
-            afterEvaluate {
-                val androidExtension = extensions.getByName("android") as TestExtension
-                val namespace = androidExtension.namespace
+            afterEvaluate { configureProfileTasks(extension) }
+        }
+    }
 
-                extensions.configure<BaselineProfileProducerExtension> {
-                    useConnectedDevices = false
-                    managedDevices.add(extension.deviceName)
-                }
+    private fun Project.configureProfileTasks(extension: BaselineProfileGeneratorExtension) {
+        val androidExtension = extensions.getByName("android") as TestExtension
+        val namespace = androidExtension.namespace
 
-                extensions.configure<TestLabGradlePluginExtension> {
-                    testOptions {
-                        results {
-                            directoriesToPull.add("$DirectoryToPullRoot/$namespace")
-                        }
-                    }
-                }
+        extensions.configure<BaselineProfileProducerExtension> {
+            useConnectedDevices = false
+            managedDevices.add(extension.deviceName)
+        }
 
-                tasks.register<Copy>("mergeBaselineProfiles") {
-                    description = "Copies and merges baseline profiles from Firebase Test Lab results"
-                    group = "baseline profile"
-
-                    val testResultsDir = layout.buildDirectory.dir(
-                        "outputs/androidTest-results/managedDevice/nonminifiedrelease/${extension.deviceName}/results",
-                    )
-
-                    from(testResultsDir) {
-                        include("**/artifacts$DirectoryToPullRoot/$namespace/*.txt")
-
-                        eachFile {
-                            // Exclude timestamped files (format: *-YYYY-MM-DD-HH-MM-SS.txt)
-                            if (name.matches(Regex(".*-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}\\.txt$"))) {
-                                exclude()
-                            } else {
-                                // Flatten directory structure
-                                path = name
-                            }
-                        }
-                        includeEmptyDirs = false
-
-                        configureBaselineProfileFiltering()
-                    }
-
-                    val dest = determineBaselineProfileDestination(extension, androidExtension)
-
-                    into(dest)
-
-                    doFirst {
-                        dest.mkdirs()
-                    }
-                }
-
-                tasks.named("${extension.deviceName}NonMinifiedReleaseAndroidTest") {
-                    finalizedBy("mergeBaselineProfiles")
-                }
-
-                tasks.register("generateBaselineProfile") {
-                    description = "Generates baseline profiles using Firebase Test Lab"
-                    group = "baseline profile"
-
-                    dependsOn("${extension.deviceName}NonMinifiedReleaseAndroidTest")
-                    finalizedBy("mergeBaselineProfiles")
+        extensions.configure<TestLabGradlePluginExtension> {
+            testOptions {
+                results {
+                    directoriesToPull.add("$DirectoryToPullRoot/$namespace")
                 }
             }
+        }
+
+        tasks.register<Copy>("mergeBaselineProfiles") {
+            description = "Copies and merges baseline profiles from Firebase Test Lab results"
+            group = "baseline profile"
+
+            val testResultsDir = layout.buildDirectory.dir(
+                "outputs/androidTest-results/managedDevice/nonminifiedrelease/${extension.deviceName}/results",
+            )
+
+            from(testResultsDir) {
+                include("**/artifacts$DirectoryToPullRoot/$namespace/*.txt")
+
+                eachFile {
+                    // Exclude timestamped files (format: *-YYYY-MM-DD-HH-MM-SS.txt)
+                    if (name.matches(Regex(".*-\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}\\.txt$"))) {
+                        exclude()
+                    } else {
+                        // Flatten directory structure
+                        path = name
+                    }
+                }
+                includeEmptyDirs = false
+
+                configureBaselineProfileFiltering()
+            }
+
+            val dest = determineBaselineProfileDestination(extension, androidExtension)
+
+            into(dest)
+
+            doFirst {
+                dest.mkdirs()
+            }
+        }
+
+        tasks.named("${extension.deviceName}NonMinifiedReleaseAndroidTest") {
+            finalizedBy("mergeBaselineProfiles")
+        }
+
+        tasks.register("generateBaselineProfile") {
+            description = "Generates baseline profiles using Firebase Test Lab"
+            group = "baseline profile"
+
+            dependsOn("${extension.deviceName}NonMinifiedReleaseAndroidTest")
+            finalizedBy("mergeBaselineProfiles")
         }
     }
 
@@ -162,19 +164,13 @@ class AndroidBaselineProfileGeneratorConventionPlugin : Plugin<Project> {
         extension: BaselineProfileGeneratorExtension,
         androidExtension: TestExtension,
     ): File {
-        return when {
-            extension.copyToLibrary != null -> {
-                val libProject = project(extension.copyToLibrary!!)
-                libProject.layout.projectDirectory.dir("src/androidMain/generated/baselineProfiles").asFile
-            }
-            androidExtension.targetProjectPath != null -> {
-                val appProject = project(androidExtension.targetProjectPath!!)
-                appProject.layout.projectDirectory.dir("src/release/generated/baselineProfiles").asFile
-            }
-            else -> {
-                throw IllegalStateException("Either targetProjectPath or copyToLibrary must be set")
-            }
+        extension.copyToLibrary?.let { libraryPath ->
+            return project(libraryPath).layout.projectDirectory.dir("src/androidMain/generated/baselineProfiles").asFile
         }
+        androidExtension.targetProjectPath?.let { appPath ->
+            return project(appPath).layout.projectDirectory.dir("src/release/generated/baselineProfiles").asFile
+        }
+        error("Either targetProjectPath or copyToLibrary must be set")
     }
 
     /**

@@ -65,7 +65,7 @@ class AndroidBaselineProfileConsumerLibraryConventionPlugin : Plugin<Project> {
                 doFirst {
                     outputDir.mkdirs()
                     // Clean any existing profile files before copying
-                    outputDir.listFiles()?.forEach { it.delete() }
+                    outputDir.listFiles()?.forEach { file -> file.delete() }
                 }
             }
 

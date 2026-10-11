@@ -11,6 +11,7 @@ class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.plugin.compose")
                 apply("com.embarrasdf.gradle.plugin.format")
+                apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
 
             val extension = extensions.getByType<ApplicationExtension>()

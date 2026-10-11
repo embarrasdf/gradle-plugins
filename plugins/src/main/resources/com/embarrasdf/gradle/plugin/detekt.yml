@@ -1,0 +1,145 @@
+# Static analysis settings shared by every embarrasdf repo, applied on top of detekt's default
+# config. Rules that overlap with the format task (embarrasdfFormatCheck) are turned off here.
+
+complexity:
+  LongMethod:
+    ignoreAnnotated: ['Composable']
+  LongParameterList:
+    ignoreAnnotated: ['Composable']
+  NamedArguments:
+    active: true
+    # Calls with two or more arguments name them, outside tests.
+    allowedArguments: 1
+    ignoreArgumentsMatchingNames: true
+    # Calls whose argument order is a convention, where names add noise.
+    ignoreMethods:
+      # replace(old, new)
+      - 'kotlin.text.replace'
+      # Coordinates and sizes: (x, y) and (width, height)
+      - 'androidx.compose.ui.geometry.Offset'
+      - 'androidx.compose.ui.geometry.Size'
+      - 'androidx.compose.ui.unit.DpSize'
+      - 'androidx.compose.ui.unit.IntOffset'
+      - 'androidx.compose.ui.graphics.Path.moveTo'
+      - 'androidx.compose.ui.graphics.Path.lineTo'
+      - 'androidx.compose.ui.graphics.Path.cubicTo'
+      - 'androidx.compose.ui.layout.MeasureScope.layout'
+      - 'androidx.compose.ui.layout.Placeable.PlacementScope.place'
+      - 'androidx.compose.ui.layout.Placeable.PlacementScope.placeRelative'
+      # Math: symmetric arguments, or (min, max)
+      - 'kotlin.comparisons.minOf'
+      - 'kotlin.comparisons.maxOf'
+      - 'kotlin.math.min'
+      - 'kotlin.math.max'
+      - 'kotlin.ranges.coerceIn'
+      - 'androidx.compose.ui.util.lerp'
+      - 'androidx.compose.ui.graphics.lerp'
+      # Recomposition keys
+      - 'androidx.compose.runtime.remember'
+      - 'androidx.compose.runtime.LaunchedEffect'
+      - 'androidx.compose.runtime.DisposableEffect'
+      - 'androidx.compose.ui.input.pointer.pointerInput'
+      # Lists of inputs
+      - 'kotlinx.coroutines.flow.combine'
+      - 'kotlin.Pair.<init>'
+      - 'kotlin.Triple.<init>'
+    excludes: ['**/test/**', '**/*Test/**']
+
+naming:
+  # Checked by the format task.
+  ClassNaming:
+    active: false
+  EnumNaming:
+    active: false
+  FunctionNaming:
+    active: false
+  MatchingDeclarationName:
+    active: false
+  ObjectPropertyNaming:
+    active: false
+  PackageNaming:
+    active: false
+  TopLevelPropertyNaming:
+    active: false
+
+style:
+  MagicNumber:
+    # Layout values in Composables (dp sizes, offsets, fractions) read better inline.
+    ignoreAnnotated: ['Composable', 'Preview']
+  UnusedPrivateFunction:
+    # Previews are private and only used by the IDE.
+    ignoreAnnotated: ['Preview']
+  # Checked by the format task.
+  MaxLineLength:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+  NoTabs:
+    active: false
+  TrailingWhitespace:
+    active: false
+  UnusedImport:
+    active: false
+  WildcardImport:
+    active: false
+
+# compose-rules (io.nlopez.compose.rules). Each rule has to be turned on here.
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: true
+  CompositionLocalAllowlist:
+    active: true
+  CompositionLocalNaming:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+  ContentSlotReused:
+    active: true
+  ContentTrailingLambda:
+    active: true
+  DefaultsVisibility:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+  PreviewAnnotationNaming:
+    active: true
+  PreviewPublic:
+    active: true
+  RememberContentMissing:
+    active: true
+  RememberMissing:
+    active: true
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
+    active: true

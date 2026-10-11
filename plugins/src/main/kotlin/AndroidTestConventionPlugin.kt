@@ -12,6 +12,7 @@ class AndroidTestConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.test")
                 apply("com.embarrasdf.gradle.plugin.format")
+                apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
 
             extensions.configure<TestExtension> {

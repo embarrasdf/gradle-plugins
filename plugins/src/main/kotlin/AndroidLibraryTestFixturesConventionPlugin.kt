@@ -13,6 +13,7 @@ class AndroidLibraryTestFixturesConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("com.embarrasdf.gradle.plugin.format")
+                apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
 
             extensions.configure<LibraryExtension> {

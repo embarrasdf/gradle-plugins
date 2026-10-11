@@ -84,12 +84,12 @@ class AndroidBenchmarkConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", Libs.androidxTestExtJunit)
-                add("implementation", Libs.androidxTestRunner)
-                add("implementation", Libs.androidxUiautomator)
-                add("implementation", Libs.androidxBenchmarkMacroJunit4)
-                add("implementation", Libs.androidxTracingPerfetto)
-                add("implementation", Libs.androidxTracingPerfettoBinary)
+                "implementation"(Libs.androidxTestExtJunit)
+                "implementation"(Libs.androidxTestRunner)
+                "implementation"(Libs.androidxUiautomator)
+                "implementation"(Libs.androidxBenchmarkMacroJunit4)
+                "implementation"(Libs.androidxTracingPerfetto)
+                "implementation"(Libs.androidxTracingPerfettoBinary)
             }
 
             val extension = extensions.create("benchmark", BenchmarkExtension::class.java)
@@ -133,7 +133,7 @@ class AndroidBenchmarkConventionPlugin : Plugin<Project> {
                 }
 
                 // Find the benchmark Android test task and wire it up
-                val capitalizedBuildType = extension.buildType.replaceFirstChar { it.uppercase() }
+                val capitalizedBuildType = extension.buildType.replaceFirstChar { char -> char.uppercase() }
                 tasks.named("${extension.deviceName}${capitalizedBuildType}AndroidTest") {
                     finalizedBy("copyBenchmarkResults")
                 }
