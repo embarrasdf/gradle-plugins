@@ -7,8 +7,8 @@ class AndroidComposeTestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             dependencies {
-                add("debugImplementation", Libs.composeUiTestManifest)
-                add("androidTestImplementation", Libs.composeUiTestJunit4)
+                "debugImplementation"(Libs.composeUiTestManifest)
+                "androidTestImplementation"(Libs.composeUiTestJunit4)
             }
         }
     }

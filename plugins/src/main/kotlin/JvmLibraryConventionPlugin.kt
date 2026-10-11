@@ -8,6 +8,7 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.jvm")
                 apply("com.embarrasdf.gradle.plugin.format")
+                apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
             configureKotlinJvm()
         }

@@ -41,10 +41,8 @@ fun Project.configureCompose(multiplatformExtension: ComposeMultiplatformExtensi
                 api(multiplatformExtension.uiToolingPreview)
             }
 
-            findByName("jvmMain")?.apply {
-                dependencies {
-                    api(multiplatformExtension.desktopCurrentOs)
-                }
+            findByName("jvmMain")?.dependencies {
+                api(multiplatformExtension.desktopCurrentOs)
             }
         }
     }

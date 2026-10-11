@@ -8,22 +8,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 internal fun Project.configureAndroidCompose(commonExtension: CommonExtension) {
     commonExtension.apply {
-        buildFeatures.apply {
-            compose = true
-        }
+        buildFeatures.compose = true
 
         dependencies {
-            add("implementation", platform(Libs.composeBom))
-            add("implementation", Libs.composeFoundation)
-            add("implementation", Libs.composeRuntime)
-            add("implementation", Libs.composeUiToolingPreview)
-            add("implementation", Libs.lifecycleRuntimeCompose)
+            "implementation"(platform(Libs.composeBom))
+            "implementation"(Libs.composeFoundation)
+            "implementation"(Libs.composeRuntime)
+            "implementation"(Libs.composeUiToolingPreview)
+            "implementation"(Libs.lifecycleRuntimeCompose)
 
-            add("androidTestImplementation", platform(Libs.composeBom))
-            add("androidTestImplementation", Libs.composeUiTestJunit4)
-            add("androidTestImplementation", Libs.androidxTestEspressoCore)
+            "androidTestImplementation"(platform(Libs.composeBom))
+            "androidTestImplementation"(Libs.composeUiTestJunit4)
+            "androidTestImplementation"(Libs.androidxTestEspressoCore)
 
-            add("debugImplementation", Libs.composeUiTooling)
+            "debugImplementation"(Libs.composeUiTooling)
         }
     }
 

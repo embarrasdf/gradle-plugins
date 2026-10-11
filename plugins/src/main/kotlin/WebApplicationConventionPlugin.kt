@@ -13,6 +13,7 @@ class WebApplicationConventionPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.embarrasdf.gradle.plugin.format")
+            apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
     }
 }

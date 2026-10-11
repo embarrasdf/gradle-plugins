@@ -11,6 +11,8 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 import org.gradle.work.DisableCachingByDefault
+import java.io.File
+import java.util.Properties
 
 class ModuleUtilsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -40,37 +42,94 @@ abstract class CreateKmpLibraryModuleTask : DefaultTask() {
             println("Library name must be provided using --name.")
             return
         }
-
         val projectDir = projectRootDir.get().asFile
-        val gradlePropertiesFile = projectDir.resolve("gradle.properties")
-        val namespace = if (gradlePropertiesFile.exists()) {
-            val properties = java.util.Properties()
-            gradlePropertiesFile.inputStream().use { properties.load(it) }
-            properties.getProperty("namespace") ?: run {
-                println("Error: 'namespace' property not found in gradle.properties")
-                return
-            }
-        } else {
-            println("Error: gradle.properties file not found in project root")
-            return
-        }
+        val namespace = readNamespace(projectDir) ?: return
 
         // Support both ":feature:auth" and "feature:auth" formats
-        val normalizedName = if (name.startsWith(":")) name.substring(1) else name
-        val modulePath = normalizedName.replace(":", "/")
-        val moduleIncludeName = if (name.startsWith(":")) name else ":$name"
-
+        val normalizedName = name.removePrefix(":")
+        val modulePath = normalizedName.replace(oldChar = ':', newChar = '/')
         val moduleDir = projectDir.resolve(modulePath)
         if (moduleDir.exists()) {
             println("Module directory '$modulePath' already exists. Skipping creation.")
-            return
+        } else {
+            createModule(
+                projectDir = projectDir,
+                moduleDir = moduleDir,
+                normalizedName = normalizedName,
+                namespace = namespace,
+            )
+            println("Successfully created module ':$normalizedName' at '$modulePath' and updated settings.gradle.kts.")
         }
-        moduleDir.mkdirs()
+    }
 
-        val packageSuffix = normalizedName.replace(":", ".").replace("-", "")
+    /** Reads `namespace` from the project's gradle.properties, or prints why it can't. */
+    private fun readNamespace(projectDir: File): String? {
+        val gradlePropertiesFile = projectDir.resolve("gradle.properties")
+        if (!gradlePropertiesFile.exists()) {
+            println("Error: gradle.properties file not found in project root")
+            return null
+        }
+        val properties = Properties()
+        gradlePropertiesFile.inputStream().use { properties.load(it) }
+        return properties.getProperty("namespace")
+            ?: null.also { println("Error: 'namespace' property not found in gradle.properties") }
+    }
+
+    private fun createModule(
+        projectDir: File,
+        moduleDir: File,
+        normalizedName: String,
+        namespace: String,
+    ) {
+        val packageSuffix = normalizedName.replace(oldChar = ':', newChar = '.').replace(oldValue = "-", newValue = "")
         val packageName = "$namespace.$packageSuffix"
+        val packagePath = packageName.replace(oldChar = '.', newChar = '/')
+        for (sourceSet in ModuleSourceSets) {
+            moduleDir.resolve("src/$sourceSet/kotlin/").resolve(packagePath).mkdirs()
+        }
 
-        val sourceSets = listOf(
+        val iosFrameworkName = normalizedName.split(":")
+            .joinToString("") { part -> part.replaceFirstChar { c -> c.uppercase() } }
+        moduleDir.resolve("build.gradle.kts").writeText(
+            buildFileContent(androidNamespace = packageName, iosFrameworkName = iosFrameworkName),
+        )
+
+        addInclude(settingsFile = projectDir.resolve("settings.gradle.kts"), moduleIncludeName = ":$normalizedName")
+    }
+
+    private fun buildFileContent(
+        androidNamespace: String,
+        iosFrameworkName: String,
+    ): String = """
+        plugins {
+            id(libs.plugins.embarrasdf.kotlin.multiplatform.library.get().pluginId)
+        }
+
+        kotlin {
+            libraryTargets(
+                androidNamespace = "$androidNamespace",
+                iosFrameworkBaseName = "$iosFrameworkName",
+            )
+
+            sourceSets {}
+        }
+
+    """.trimIndent()
+
+    /** Adds the module's include() to settings.gradle.kts, keeping the includes sorted at the end. */
+    private fun addInclude(
+        settingsFile: File,
+        moduleIncludeName: String,
+    ) {
+        val settingsLines = settingsFile.readLines()
+        val isInclude = { line: String -> line.trim().startsWith("include(") }
+        val includes = (settingsLines.filter(isInclude) + """include("$moduleIncludeName")""").sorted()
+        val otherLines = settingsLines.filterNot(isInclude)
+        settingsFile.writeText((otherLines + includes).joinToString("\n").plus("\n"))
+    }
+
+    private companion object {
+        val ModuleSourceSets = listOf(
             "commonMain",
             "commonTest",
             "androidMain",
@@ -78,45 +137,5 @@ abstract class CreateKmpLibraryModuleTask : DefaultTask() {
             "jvmMain",
             "wasmJsMain",
         )
-        for (dir in sourceSets) {
-            val sourceSetDir = "src/$dir/kotlin/"
-            val dirPath = moduleDir.resolve(sourceSetDir).resolve(packageName.replace(".", "/"))
-            dirPath.mkdirs()
-        }
-
-        val androidNamespace = packageName
-        val iosFrameworkName = normalizedName.split(":")
-            .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
-        val buildFileContent = """
-            plugins {
-                id(libs.plugins.embarrasdf.kotlin.multiplatform.library.get().pluginId)
-            }
-
-            kotlin {
-                libraryTargets(
-                    androidNamespace = "$androidNamespace",
-                    iosFrameworkBaseName = "$iosFrameworkName",
-                )
-
-                sourceSets {}
-            }
-
-        """.trimIndent()
-        moduleDir.resolve("build.gradle.kts").writeText(buildFileContent)
-
-        val settingsFile = projectDir.resolve("settings.gradle.kts")
-        val newIncludeLine = """include("$moduleIncludeName")"""
-        val settingsLines = settingsFile.readLines().toMutableList()
-
-        val includes = settingsLines.filter { it.trim().startsWith("include(") }.toMutableList()
-        val otherLines = settingsLines.filterNot { it.trim().startsWith("include(") }
-
-        includes.add(newIncludeLine)
-        includes.sort()
-
-        val newSettingsContent = (otherLines + includes).joinToString("\n").plus("\n")
-        settingsFile.writeText(newSettingsContent)
-
-        println("Successfully created module '$moduleIncludeName' at '$modulePath' and updated settings.gradle.kts.")
     }
 }

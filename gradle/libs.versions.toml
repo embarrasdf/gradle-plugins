@@ -16,6 +16,8 @@ androidx-test-espresso = "3.7.0"
 androidx-test-ext-junit = "1.3.0"
 compose-bom = "2026.08.00"
 compose-multiplatform = "1.12.0"
+compose-rules = "0.6.8"
+detekt = "2.0.0-alpha.6"
 junit4 = "4.13.2"
 junit = "6.1.3"
 ktlint = "1.8.0"
@@ -43,6 +45,7 @@ compose-compiler-plugin = { group = "org.jetbrains.kotlin.plugin.compose", name 
 shipkit-autoversion-plugin = { group = "org.shipkit", name = "shipkit-auto-version", version.ref = "shipkit-autoversion" }
 shipkit-changelog-plugin = { group = "org.shipkit", name = "shipkit-changelog", version.ref = "shipkit-changelog" }
 maven-publish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "maven-publish" }
+detekt-gradle-plugin = { group = "dev.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 spotless-plugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 
 # Applied via convention plugins
@@ -75,6 +78,7 @@ lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-ru
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules" }
 ktlint-cli = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
@@ -90,5 +94,6 @@ shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref
 
 # gradle-plugins' own build-logic
 embarrasdf-format = { id = "embarrasdf-format" }
+embarrasdf-static-analysis = { id = "embarrasdf-static-analysis" }
 
 [bundles]

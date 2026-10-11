@@ -1,0 +1,117 @@
+# detekt settings shared by every embarrasdf repo, applied on top of detekt's default config.
+#
+# Formatting and naming belong to ktlint (see ktlint.editorconfig.properties), so the detekt
+# rules that overlap with it are turned off here.
+
+complexity:
+  LongMethod:
+    ignoreAnnotated: ['Composable']
+  LongParameterList:
+    ignoreAnnotated: ['Composable']
+  NamedArguments:
+    active: true
+    # Calls with two or more arguments name them, outside tests.
+    allowedArguments: 1
+    ignoreArgumentsMatchingNames: true
+    excludes: ['**/test/**', '**/*Test/**']
+
+naming:
+  # ktlint's class-naming, enum-entry-name-case, function-naming, filename, property-naming and
+  # package-name rules cover these. ktlint allows PascalCase constants and @Composable functions.
+  ClassNaming:
+    active: false
+  EnumNaming:
+    active: false
+  FunctionNaming:
+    active: false
+  MatchingDeclarationName:
+    active: false
+  ObjectPropertyNaming:
+    active: false
+  PackageNaming:
+    active: false
+  TopLevelPropertyNaming:
+    active: false
+
+style:
+  MagicNumber:
+    # Layout values in Composables (dp sizes, offsets, fractions) read better inline.
+    ignoreAnnotated: ['Composable', 'Preview']
+  # ktlint's max-line-length, final-newline, indent, no-trailing-spaces,
+  # no-unused-imports and no-wildcard-imports rules cover these.
+  MaxLineLength:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+  NoTabs:
+    active: false
+  TrailingWhitespace:
+    active: false
+  UnusedImport:
+    active: false
+  WildcardImport:
+    active: false
+  UnusedPrivateFunction:
+    # Previews are private and only used by the IDE.
+    ignoreAnnotated: ['Preview']
+
+# compose-rules (io.nlopez.compose.rules). Each rule has to be turned on here.
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: true
+  CompositionLocalAllowlist:
+    active: true
+  CompositionLocalNaming:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+  ContentSlotReused:
+    active: true
+  ContentTrailingLambda:
+    active: true
+  DefaultsVisibility:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+  PreviewAnnotationNaming:
+    active: true
+  PreviewPublic:
+    active: true
+  RememberContentMissing:
+    active: true
+  RememberMissing:
+    active: true
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
+    active: true

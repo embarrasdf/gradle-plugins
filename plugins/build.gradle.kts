@@ -4,6 +4,7 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     alias(embarrasdfPluginLibs.plugins.maven.publish)
+    alias(embarrasdfPluginLibs.plugins.embarrasdf.static.analysis)
     id("generate-libs")
 }
 
@@ -37,6 +38,7 @@ dependencies {
     implementation(embarrasdfPluginLibs.maven.publish.plugin)
     implementation(embarrasdfPluginLibs.firebase.testlab.plugin)
     implementation(embarrasdfPluginLibs.spotless.plugin)
+    implementation(embarrasdfPluginLibs.detekt.gradle.plugin)
 
     testImplementation(embarrasdfPluginLibs.junit.jupiter)
     testImplementation(embarrasdfPluginLibs.junit.platform.launcher)
@@ -143,6 +145,10 @@ gradlePlugin {
         register("moduleUtils") {
             id = "com.embarrasdf.gradle.plugin.module.utils"
             implementationClass = "ModuleUtilsPlugin"
+        }
+        register("staticAnalysis") {
+            id = "com.embarrasdf.gradle.plugin.static.analysis"
+            implementationClass = "StaticAnalysisConventionPlugin"
         }
         register("webApplication") {
             id = "com.embarrasdf.gradle.plugin.web.application"

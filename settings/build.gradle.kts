@@ -8,6 +8,7 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
     alias(embarrasdfPluginLibs.plugins.maven.publish)
+    alias(embarrasdfPluginLibs.plugins.embarrasdf.static.analysis)
 }
 
 group = "com.embarrasdf.gradle.plugin"

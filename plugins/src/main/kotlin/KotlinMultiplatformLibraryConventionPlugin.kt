@@ -64,6 +64,7 @@ class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.android.kotlin.multiplatform.library")
             apply("com.embarrasdf.gradle.plugin.format")
+            apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
 
         configureKotlin()
@@ -103,7 +104,10 @@ fun Project.libraryTargets(
         if (KotlinTarget.ANDROID in enabledTargets) {
             val androidLibrary = (this as ExtensionAware).extensions
                 .getByType<KotlinMultiplatformAndroidLibraryExtension>()
-            configureKotlinMultiplatformAndroidLibrary(androidLibrary, androidConfiguration)
+            configureKotlinMultiplatformAndroidLibrary(
+                androidLibraryExtension = androidLibrary,
+                configuration = androidConfiguration,
+            )
         }
 
         if (KotlinTarget.JVM in enabledTargets) {

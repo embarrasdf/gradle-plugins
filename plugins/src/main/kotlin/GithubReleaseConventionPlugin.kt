@@ -135,7 +135,7 @@ abstract class UpdateReadmeVersionTask : DefaultTask() {
         val outputFile = readmeOutputFile.get().asFile
         val currentVersion = projectVersion.get()
         val content = templateFile.readText()
-        val updatedContent = content.replace("{{VERSION}}", currentVersion)
+        val updatedContent = content.replace(oldValue = "{{VERSION}}", newValue = currentVersion)
         outputFile.writeText(updatedContent)
         println("Generated README.md from template with version $currentVersion")
     }
