@@ -1,6 +1,7 @@
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -27,29 +28,37 @@ class ModuleUtilsPluginTest {
         val gradleDir = File(testProjectDir, "gradle")
         gradleDir.mkdirs()
         val libsFile = File(gradleDir, "libs.versions.toml")
-        libsFile.writeText("""
+        libsFile.writeText(
+            """
             [versions]
             kotlin = "2.2.20"
 
             [plugins]
             embarrasdf-kotlin-multiplatform-library = { id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library", version = "0.0.1" }
-        """.trimIndent())
+            """.trimIndent(),
+        )
 
-        settingsFile.writeText("""
+        settingsFile.writeText(
+            """
             rootProject.name = "test-project"
 
             enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-        """.trimIndent())
+            """.trimIndent(),
+        )
 
-        buildFile.writeText("""
+        buildFile.writeText(
+            """
             plugins {
                 id("com.embarrasdf.gradle.plugin.module.utils")
             }
-        """.trimIndent())
+            """.trimIndent(),
+        )
 
-        gradlePropertiesFile.writeText("""
+        gradlePropertiesFile.writeText(
+            """
             namespace=$testNamespace
-        """.trimIndent())
+            """.trimIndent(),
+        )
     }
 
     @Nested
@@ -87,8 +96,14 @@ class ModuleUtilsPluginTest {
             assertTrue(settingsContent.contains("include(\":auth\")"), "Settings should include module")
 
             val buildContent = buildFile.readText()
-            assertTrue(buildContent.contains("androidNamespace = \"com.example.test.auth\""), "Build file should have androidNamespace")
-            assertTrue(buildContent.contains("iosFrameworkBaseName = \"Auth\""), "Build file should have iosFrameworkBaseName")
+            assertTrue(
+                buildContent.contains("androidNamespace = \"com.example.test.auth\""),
+                "Build file should have androidNamespace",
+            )
+            assertTrue(
+                buildContent.contains("iosFrameworkBaseName = \"Auth\""),
+                "Build file should have iosFrameworkBaseName",
+            )
         }
 
         @Test
@@ -124,8 +139,14 @@ class ModuleUtilsPluginTest {
             assertTrue(settingsContent.contains("include(\":feature:auth\")"), "Settings should include nested module")
 
             val buildContent = buildFile.readText()
-            assertTrue(buildContent.contains("androidNamespace = \"com.example.test.feature.auth\""), "Build file should have androidNamespace")
-            assertTrue(buildContent.contains("iosFrameworkBaseName = \"FeatureAuth\""), "Build file should have iosFrameworkBaseName")
+            assertTrue(
+                buildContent.contains("androidNamespace = \"com.example.test.feature.auth\""),
+                "Build file should have androidNamespace",
+            )
+            assertTrue(
+                buildContent.contains("iosFrameworkBaseName = \"FeatureAuth\""),
+                "Build file should have iosFrameworkBaseName",
+            )
         }
 
         @Test
@@ -151,11 +172,14 @@ class ModuleUtilsPluginTest {
                 .map { it.trim() }
                 .filter { it.isNotEmpty() }
 
-            assertEquals(listOf(
-                "include(\":alpha\")",
-                "include(\":beta\")",
-                "include(\":zeta\")"
-            ), includeStatements)
+            assertEquals(
+                listOf(
+                    "include(\":alpha\")",
+                    "include(\":beta\")",
+                    "include(\":zeta\")",
+                ),
+                includeStatements,
+            )
         }
     }
 }

@@ -1,10 +1,13 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.embarrasdf.gradle.plugin.AndroidLibraryTargetConfiguration
 import com.embarrasdf.gradle.plugin.IosFrameworkConfiguration
 import com.embarrasdf.gradle.plugin.IosLibraryTargetConfiguration
 import com.embarrasdf.gradle.plugin.configure
+import com.embarrasdf.gradle.plugin.configureBrowserTests
 import com.embarrasdf.gradle.plugin.configureKotlin
 import com.embarrasdf.gradle.plugin.configureKotlinMultiplatformAndroidLibrary
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
+import com.embarrasdf.gradle.plugin.registerTestTasks
+import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
@@ -19,7 +22,6 @@ enum class KotlinTarget {
     JVM,
     IOS,
     WASM,
-    ;
 }
 
 /**
@@ -57,12 +59,17 @@ enum class KotlinTarget {
  */
 class KotlinMultiplatformLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
+        useNpmForKotlinWeb()
+
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("com.android.kotlin.multiplatform.library")
+            apply("com.embarrasdf.gradle.plugin.format")
+            apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
 
         configureKotlin()
+        registerTestTasks()
     }
 }
 
@@ -70,26 +77,26 @@ fun Project.libraryTargets(
     androidNamespace: String,
     iosFrameworkBaseName: String,
     iosFrameworkIsStatic: Boolean = true,
-    targets: Set<KotlinTarget>? = null
+    targets: Set<KotlinTarget>? = null,
 ) {
     libraryTargets(
         androidConfiguration = AndroidLibraryTargetConfiguration(
-            namespace = androidNamespace
+            namespace = androidNamespace,
         ),
         iosConfiguration = IosLibraryTargetConfiguration(
             framework = IosFrameworkConfiguration(
                 baseName = iosFrameworkBaseName,
-                isStatic = iosFrameworkIsStatic
-            )
+                isStatic = iosFrameworkIsStatic,
+            ),
         ),
-        targets = targets
+        targets = targets,
     )
 }
 
 fun Project.libraryTargets(
     androidConfiguration: AndroidLibraryTargetConfiguration,
     iosConfiguration: IosLibraryTargetConfiguration,
-    targets: Set<KotlinTarget>? = null
+    targets: Set<KotlinTarget>? = null,
 ) {
     val enabledTargets = targets ?: loadTargetsFromProperties()
 
@@ -99,7 +106,10 @@ fun Project.libraryTargets(
         if (KotlinTarget.ANDROID in enabledTargets) {
             val androidLibrary = (this as ExtensionAware).extensions
                 .getByType<KotlinMultiplatformAndroidLibraryExtension>()
-            configureKotlinMultiplatformAndroidLibrary(androidLibrary, androidConfiguration)
+            configureKotlinMultiplatformAndroidLibrary(
+                androidLibraryExtension = androidLibrary,
+                configuration = androidConfiguration,
+            )
         }
 
         if (KotlinTarget.JVM in enabledTargets) {
@@ -123,7 +133,9 @@ fun Project.libraryTargets(
         if (KotlinTarget.WASM in enabledTargets) {
             @OptIn(ExperimentalWasmDsl::class)
             wasmJs {
-                browser()
+                browser {
+                    configureBrowserTests()
+                }
                 binaries.executable()
             }
         }

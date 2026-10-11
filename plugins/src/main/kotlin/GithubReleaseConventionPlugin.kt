@@ -1,3 +1,4 @@
+import com.embarrasdf.gradle.plugin.addToReleaseTask
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -65,6 +66,10 @@ open class GithubReleaseExtension {
  * ```bash
  * ./gradlew updateReadmeVersion
  * ```
+ *
+ * `embarrasdfRelease` creates the GitHub release, regenerates the README if it has a template, and
+ * publishes every project that applies `com.embarrasdf.gradle.plugin.maven.publish` before the
+ * release is created.
  */
 class GithubReleaseConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -103,6 +108,11 @@ class GithubReleaseConventionPlugin : Plugin<Project> {
             updateReadmeTask.projectVersion.set(project.version.toString())
             updateReadmeTask.readmeTemplateFile.set(project.layout.projectDirectory.file(extension.readmeTemplateFile))
             updateReadmeTask.readmeOutputFile.set(project.layout.projectDirectory.file(extension.readmeOutputFile))
+
+            project.addToReleaseTask("githubRelease")
+            if (project.file(extension.readmeTemplateFile).exists()) {
+                project.addToReleaseTask("updateReadmeVersion")
+            }
         }
     }
 }

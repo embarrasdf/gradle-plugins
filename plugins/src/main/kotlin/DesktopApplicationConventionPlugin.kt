@@ -1,3 +1,4 @@
+import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -9,7 +10,10 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("org.jetbrains.kotlin.multiplatform")
+            apply("com.embarrasdf.gradle.plugin.format")
+            apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
+        registerTestTasks()
     }
 }
 

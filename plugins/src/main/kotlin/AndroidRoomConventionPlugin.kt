@@ -14,7 +14,7 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
             pluginManager.apply("com.google.devtools.ksp")
 
             extensions.configure<KspExtension> {
-                arg("room.generateKotlin", "true")
+                arg(k = "room.generateKotlin", v = "true")
             }
 
             extensions.configure<RoomExtension> {
@@ -25,9 +25,9 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("implementation", Libs.roomRuntime)
-                add("implementation", Libs.roomKtx)
-                add("ksp", Libs.roomCompiler)
+                "implementation"(Libs.roomRuntime)
+                "implementation"(Libs.roomKtx)
+                "ksp"(Libs.roomCompiler)
             }
         }
     }
