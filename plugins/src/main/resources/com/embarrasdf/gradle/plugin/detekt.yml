@@ -44,6 +44,9 @@ complexity:
       - 'kotlin.Pair.<init>'
       - 'kotlin.Triple.<init>'
     excludes: ['**/test/**', '**/*Test/**']
+  TooManyFunctions:
+    # Private helpers and previews stay next to the code they serve.
+    ignorePrivate: true
 
 naming:
   # Checked by the format task.
@@ -66,6 +69,8 @@ style:
   MagicNumber:
     # Layout values in Composables (dp sizes, offsets, fractions) read better inline.
     ignoreAnnotated: ['Composable', 'Preview']
+    # Enum entries name their values, like bit flags.
+    ignoreEnums: true
   ReturnCount:
     active: false
   UnusedPrivateFunction:
