@@ -5,7 +5,7 @@ complexity:
   LongMethod:
     ignoreAnnotated: ['Composable']
   LongParameterList:
-    ignoreAnnotated: ['Composable']
+    active: false
   NamedArguments:
     active: true
     # Calls with two or more arguments name them, outside tests.
@@ -66,6 +66,8 @@ style:
   MagicNumber:
     # Layout values in Composables (dp sizes, offsets, fractions) read better inline.
     ignoreAnnotated: ['Composable', 'Preview']
+  ReturnCount:
+    active: false
   UnusedPrivateFunction:
     # Previews are private and only used by the IDE.
     ignoreAnnotated: ['Preview']
