@@ -66,6 +66,33 @@ class CiTasksTest {
     }
 
     @Test
+    fun `embarrasdfWarmCaches builds a desktop app without its runtime image`() {
+        File(projectDir, "settings.gradle.kts").appendText("\ninclude(\":desktop\")\n")
+        File(projectDir, "desktop").mkdirs()
+        File(projectDir, "desktop/build.gradle.kts").writeText(
+            """
+            plugins {
+                id("com.embarrasdf.gradle.plugin.desktop.application")
+                id("com.embarrasdf.gradle.plugin.compose.multiplatform")
+            }
+
+            desktopAppTarget(mainClass = "MainKt")
+
+            compose.desktop {
+                application {
+                    mainClass = "MainKt"
+                }
+            }
+            """.trimIndent(),
+        )
+
+        val tasks = dryRun("embarrasdfWarmCaches")
+
+        assertTrue(":desktop:packageUberJarForCurrentOS" in tasks, "Expected the uber jar in $tasks")
+        assertTrue(":desktop:createRuntimeImage" !in tasks, "Expected no runtime image in $tasks")
+    }
+
+    @Test
     fun `embarrasdfRelease publishes before creating the GitHub release`() {
         val tasks = dryRun("embarrasdfRelease")
 

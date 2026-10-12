@@ -15,7 +15,9 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
             apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
         registerTestTasks()
-        addToWarmCachesTask("createDistributable")
+        // The uber jar builds the app and resolves its runtime classpath like createDistributable,
+        // but skips jlink's runtime image, which caches nothing and can fail in a container.
+        addToWarmCachesTask("packageUberJarForCurrentOS")
     }
 }
 
