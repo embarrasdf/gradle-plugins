@@ -27,6 +27,7 @@ one command everywhere:
 | --- | --- |
 | `embarrasdfTest` | JVM, Android unit (debug) and browser tests |
 | `embarrasdfTestApple` | iOS simulator tests |
+| `embarrasdfWarmCaches` | Builds what `embarrasdfTest` needs without running the tests, plus the Android (debug), desktop and web apps, to fill the Gradle caches for workspace images |
 | `embarrasdfRelease` | Maven Central publishing, the templated README and the GitHub release |
 | `embarrasdfFormat`, `embarrasdfFormatCheck` | ktlint fixes and checks |
 
