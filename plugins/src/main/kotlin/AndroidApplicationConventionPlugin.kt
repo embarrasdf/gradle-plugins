@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.embarrasdf.gradle.plugin.AndroidMinSdk
 import com.embarrasdf.gradle.plugin.AndroidTargetSdk
+import com.embarrasdf.gradle.plugin.addToWarmCachesTask
 import com.embarrasdf.gradle.plugin.configureKotlinAndroid
 import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
@@ -16,6 +17,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.embarrasdf.gradle.plugin.static.analysis")
             }
             registerTestTasks()
+            addToWarmCachesTask("assembleDebug")
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)

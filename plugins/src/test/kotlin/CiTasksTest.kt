@@ -58,6 +58,14 @@ class CiTasksTest {
     }
 
     @Test
+    fun `embarrasdfWarmCaches compiles the JVM tests without running them`() {
+        val tasks = dryRun("embarrasdfWarmCaches")
+
+        assertTrue(":lib:compileTestKotlin" in tasks, "Expected :lib:compileTestKotlin in $tasks")
+        assertTrue(":lib:test" !in tasks, "Expected no :lib:test in $tasks")
+    }
+
+    @Test
     fun `embarrasdfRelease publishes before creating the GitHub release`() {
         val tasks = dryRun("embarrasdfRelease")
 

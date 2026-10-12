@@ -1,3 +1,4 @@
+import com.embarrasdf.gradle.plugin.addToWarmCachesTask
 import com.embarrasdf.gradle.plugin.configureBrowserTests
 import com.embarrasdf.gradle.plugin.registerTestTasks
 import com.embarrasdf.gradle.plugin.useNpmForKotlinWeb
@@ -17,6 +18,7 @@ class WebApplicationConventionPlugin : Plugin<Project> {
             apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
         registerTestTasks()
+        addToWarmCachesTask("wasmJsBrowserDistribution")
     }
 }
 

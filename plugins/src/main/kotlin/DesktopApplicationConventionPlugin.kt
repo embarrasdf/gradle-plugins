@@ -1,3 +1,4 @@
+import com.embarrasdf.gradle.plugin.addToWarmCachesTask
 import com.embarrasdf.gradle.plugin.registerTestTasks
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -14,6 +15,7 @@ class DesktopApplicationConventionPlugin : Plugin<Project> {
             apply("com.embarrasdf.gradle.plugin.static.analysis")
         }
         registerTestTasks()
+        addToWarmCachesTask("createDistributable")
     }
 }
 
