@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
@@ -15,8 +17,16 @@ dependencies {
     implementation(embarrasdfPluginLibs.detekt.gradle.plugin)
 }
 
+// Compiled by the JDK that runs Gradle, for Java 17, as the plugins module is.
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 kotlin {
-    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
 }
 
 gradlePlugin {
