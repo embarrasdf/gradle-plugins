@@ -15,6 +15,9 @@ import java.util.Properties
  * convention plugins from a gradle-plugins checkout beside the repo instead of
  * the published ones. Without it, the repo builds against the published plugins,
  * as its CI does, so every build uses the same plugins and shares cached outputs.
+ *
+ * With `embarrasdf.dependencyLocking=true` in gradle.properties, dependency versions are locked;
+ * see [configureDependencyLocking].
  */
 class SettingsConventionPlugin : Plugin<Settings> {
     override fun apply(settings: Settings) {
@@ -29,5 +32,7 @@ class SettingsConventionPlugin : Plugin<Settings> {
             }
             settings.includeBuild(gradlePlugins)
         }
+
+        settings.configureDependencyLocking()
     }
 }
